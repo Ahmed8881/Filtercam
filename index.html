@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoStudio Pro - Camera App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="camera-icon">
+                <i class="fas fa-camera"></i>
+            </div>
+            <h2>PhotoStudio Pro</h2>
+            <div class="loading-spinner"></div>
+            <p>Initializing camera...</p>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="main-app hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-camera-retro"></i>
+                    <span>PhotoStudio Pro</span>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-images"></i>
+                        <span id="photoCounter">0/3</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Camera Section -->
+        <main class="camera-section">
+            <div class="camera-container">
+                <!-- Video Preview -->
+                <div class="video-wrapper">
+                    <video id="videoElement" autoplay muted playsinline></video>
+                    <canvas id="captureCanvas" class="hidden"></canvas>
+                    
+                    <!-- Camera Overlay -->
+                    <div class="camera-overlay">
+                        <!-- Timer Display -->
+                        <div id="timerDisplay" class="timer-display hidden">
+                            <div class="timer-circle">
+                                <span id="timerNumber">3</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Smile Prompt -->
+                        <div id="smilePrompt" class="smile-prompt hidden">
+                            <div class="smile-content">
+                                <i class="fas fa-smile"></i>
+                                <p>Say Cheese! 📸</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Flash Effect -->
+                        <div id="flashEffect" class="flash-effect"></div>
+                    </div>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="filter-section">
+                    <h3><i class="fas fa-magic"></i> Filters</h3>
+                    <div class="filter-grid">
+                        <button class="filter-btn active" data-filter="none">
+                            <div class="filter-preview filter-none"></div>
+                            <span>Original</span>
+                        </button>
+                        <button class="filter-btn" data-filter="grayscale">
+                            <div class="filter-preview filter-grayscale"></div>
+                            <span>B&W</span>
+                        </button>
+                        <button class="filter-btn" data-filter="sepia">
+                            <div class="filter-preview filter-sepia"></div>
+                            <span>Sepia</span>
+                        </button>
+                        <button class="filter-btn" data-filter="vintage">
+                            <div class="filter-preview filter-vintage"></div>
+                            <span>Vintage</span>
+                        </button>
+                        <button class="filter-btn" data-filter="cool">
+                            <div class="filter-preview filter-cool"></div>
+                            <span>Cool</span>
+                        </button>
+                        <button class="filter-btn" data-filter="warm">
+                            <div class="filter-preview filter-warm"></div>
+                            <span>Warm</span>
+                        </button>
+                        <button class="filter-btn" data-filter="dramatic">
+                            <div class="filter-preview filter-dramatic"></div>
+                            <span>Dramatic</span>
+                        </button>
+                        <button class="filter-btn" data-filter="neon">
+                            <div class="filter-preview filter-neon"></div>
+                            <span>Neon</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Camera Controls -->
+                <div class="camera-controls">
+                    <button id="switchCameraBtn" class="control-btn secondary">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Switch</span>
+                    </button>
+                    
+                    <button id="captureBtn" class="capture-btn">
+                        <div class="capture-inner">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </button>
+                    
+                    <button id="settingsBtn" class="control-btn secondary">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section">
+            <div class="gallery-header">
+                <h2><i class="fas fa-images"></i> Your Gallery</h2>
+                <button id="clearGalleryBtn" class="btn-secondary">
+                    <i class="fas fa-trash"></i> Clear All
+                </button>
+            </div>
+            
+            <div id="photoGallery" class="photo-grid">
+                <div class="empty-gallery">
+                    <i class="fas fa-camera"></i>
+                    <p>No photos yet</p>
+                    <span>Start capturing memories!</span>
+                </div>
+            </div>
+            
+            <!-- Collage Section -->
+            <div class="collage-section">
+                <button id="createCollageBtn" class="btn-primary disabled">
+                    <i class="fas fa-magic"></i>
+                    <span>Create Collage</span>
+                    <small>(Need 3 photos)</small>
+                </button>
+                
+                <div id="collageResult" class="collage-result hidden">
+                    <h3>Your Amazing Collage</h3>
+                    <div class="collage-container">
+                        <canvas id="collageCanvas"></canvas>
+                        <div class="collage-actions">
+                            <button id="downloadCollageBtn" class="btn-primary">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                            <button id="shareCollageBtn" class="btn-secondary">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-cog"></i> Camera Settings</h3>
+                    <button id="closeSettingsBtn" class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label>
+                            <i class="fas fa-clock"></i>
+                            Timer Delay
+                        </label>
+                        <select id="timerSelect">
+                            <option value="0">No Timer</option>
+                            <option value="3" selected>3 seconds</option>
+                            <option value="5">5 seconds</option>
+                            <option value="10">10 seconds</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>
+                            <i class="fas fa-volume-up"></i>
+                            Sound Effects
+                        </label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="soundToggle" checked>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>
+                            <i class="fas fa-bolt"></i>
+                            Flash Effect
+                        </label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="flashToggle" checked>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>
+                            <i class="fas fa-expand-arrows-alt"></i>
+                            Photo Quality
+                        </label>
+                        <select id="qualitySelect">
+                            <option value="0.7">Standard</option>
+                            <option value="0.8" selected>High</option>
+                            <option value="0.9">Ultra</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo Preview Modal -->
+        <div id="photoModal" class="modal hidden">
+            <div class="modal-content photo-modal">
+                <div class="modal-header">
+                    <h3>Photo Preview</h3>
+                    <button id="closePhotoBtn" class="close-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="previewImage" src="/placeholder.svg" alt="Photo Preview">
+                    <div class="photo-actions">
+                        <button id="downloadPhotoBtn" class="btn-primary">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                        <button id="deletePhotoBtn" class="btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="shutterSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    <audio id="timerSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+
+    <script src="main.js"></script>
+</body>
+</html>
