@@ -180,6 +180,7 @@ class PhotoStudioPro {
         }
         
         this.showSmilePrompt();
+        await this.delay(1000);
         await this.capturePhoto();
         
         this.isCapturing = false;
