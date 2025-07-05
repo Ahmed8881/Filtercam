@@ -184,7 +184,6 @@ The app is fully responsive and works great on mobile devices:
 
 ## 🐛 Known Issues
 
-- Camera switching may not work on all mobile devices
 - Some filters may not render identically across all browsers
 - WebRTC requires HTTPS in production environments
 
@@ -206,9 +205,3 @@ If you encounter any issues or have questions:
 2. Ensure camera permissions are granted
 3. Try refreshing the page
 4. Test in a different browser
-
----
-
-**Made with ❤️ by PhotoStudio Pro Team**
-
-*Capture life's beautiful moments with style!*
