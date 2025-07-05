@@ -6,7 +6,7 @@
     <title>PhotoStudio Pro - Camera App</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Loading Screen -->
@@ -35,6 +35,10 @@
                         <i class="fas fa-images"></i>
                         <span id="photoCounter">0/3</span>
                     </div>
+                    <div class="stat-item">
+                        <i class="fas fa-palette"></i>
+                        <span id="currentFilterName">Original</span>
+                    </div>
                 </div>
             </div>
         </header>
@@ -49,6 +53,14 @@
                     
                     <!-- Camera Overlay -->
                     <div class="camera-overlay">
+                        <!-- Grid Lines -->
+                        <div class="grid-lines">
+                            <div class="grid-line vertical"></div>
+                            <div class="grid-line vertical"></div>
+                            <div class="grid-line horizontal"></div>
+                            <div class="grid-line horizontal"></div>
+                        </div>
+                        
                         <!-- Timer Display -->
                         <div id="timerDisplay" class="timer-display hidden">
                             <div class="timer-circle">
@@ -59,8 +71,9 @@
                         <!-- Smile Prompt -->
                         <div id="smilePrompt" class="smile-prompt hidden">
                             <div class="smile-content">
-                                <i class="fas fa-smile"></i>
+                                <i class="fas fa-smile-beam"></i>
                                 <p>Say Cheese! 📸</p>
+                                <span>Get ready for an amazing shot!</span>
                             </div>
                         </div>
                         
@@ -71,37 +84,67 @@
 
                 <!-- Filter Controls -->
                 <div class="filter-section">
-                    <h3><i class="fas fa-magic"></i> Filters</h3>
+                    <div class="filter-header">
+                        <h3><i class="fas fa-magic"></i> Creative Filters</h3>
+                        <div class="filter-info">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Choose your style</span>
+                        </div>
+                    </div>
                     <div class="filter-grid">
-                        <button class="filter-btn active" data-filter="none">
+                        <button class="filter-btn active" data-filter="none" data-name="Original">
+                            <div class="filter-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
                             <div class="filter-preview filter-none"></div>
                             <span>Original</span>
                         </button>
-                        <button class="filter-btn" data-filter="grayscale">
+                        <button class="filter-btn" data-filter="grayscale" data-name="Black & White">
+                            <div class="filter-icon">
+                                <i class="fas fa-adjust"></i>
+                            </div>
                             <div class="filter-preview filter-grayscale"></div>
                             <span>B&W</span>
                         </button>
-                        <button class="filter-btn" data-filter="sepia">
+                        <button class="filter-btn" data-filter="sepia" data-name="Sepia">
+                            <div class="filter-icon">
+                                <i class="fas fa-leaf"></i>
+                            </div>
                             <div class="filter-preview filter-sepia"></div>
                             <span>Sepia</span>
                         </button>
-                        <button class="filter-btn" data-filter="vintage">
+                        <button class="filter-btn" data-filter="vintage" data-name="Vintage">
+                            <div class="filter-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
                             <div class="filter-preview filter-vintage"></div>
                             <span>Vintage</span>
                         </button>
-                        <button class="filter-btn" data-filter="cool">
+                        <button class="filter-btn" data-filter="cool" data-name="Cool Blue">
+                            <div class="filter-icon">
+                                <i class="fas fa-snowflake"></i>
+                            </div>
                             <div class="filter-preview filter-cool"></div>
                             <span>Cool</span>
                         </button>
-                        <button class="filter-btn" data-filter="warm">
+                        <button class="filter-btn" data-filter="warm" data-name="Warm Sunset">
+                            <div class="filter-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
                             <div class="filter-preview filter-warm"></div>
                             <span>Warm</span>
                         </button>
-                        <button class="filter-btn" data-filter="dramatic">
+                        <button class="filter-btn" data-filter="dramatic" data-name="Dramatic">
+                            <div class="filter-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
                             <div class="filter-preview filter-dramatic"></div>
-                            <span>Dramatic</span>
+                            <span>Drama</span>
                         </button>
-                        <button class="filter-btn" data-filter="neon">
+                        <button class="filter-btn" data-filter="neon" data-name="Neon Glow">
+                            <div class="filter-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
                             <div class="filter-preview filter-neon"></div>
                             <span>Neon</span>
                         </button>
@@ -119,6 +162,7 @@
                         <div class="capture-inner">
                             <i class="fas fa-camera"></i>
                         </div>
+                        <div class="capture-ring"></div>
                     </button>
                     
                     <button id="settingsBtn" class="control-btn secondary">
@@ -133,37 +177,66 @@
         <section class="gallery-section">
             <div class="gallery-header">
                 <h2><i class="fas fa-images"></i> Your Gallery</h2>
-                <button id="clearGalleryBtn" class="btn-secondary">
-                    <i class="fas fa-trash"></i> Clear All
-                </button>
+                <div class="gallery-actions">
+                    <button id="clearGalleryBtn" class="btn-secondary">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
             </div>
             
             <div id="photoGallery" class="photo-grid">
                 <div class="empty-gallery">
-                    <i class="fas fa-camera"></i>
-                    <p>No photos yet</p>
-                    <span>Start capturing memories!</span>
+                    <div class="empty-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>No photos yet</h3>
+                    <p>Start capturing amazing memories!</p>
+                    <div class="empty-features">
+                        <div class="feature-item">
+                            <i class="fas fa-magic"></i>
+                            <span>8 Creative Filters</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Timer Function</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-palette"></i>
+                            <span>Auto Collage</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <!-- Collage Section -->
             <div class="collage-section">
+                <div class="collage-header">
+                    <h3><i class="fas fa-magic"></i> Create Amazing Collage</h3>
+                    <p>Combine your 3 photos into a stunning masterpiece</p>
+                </div>
+                
                 <button id="createCollageBtn" class="btn-primary disabled">
-                    <i class="fas fa-magic"></i>
+                    <i class="fas fa-wand-magic-sparkles"></i>
                     <span>Create Collage</span>
                     <small>(Need 3 photos)</small>
                 </button>
                 
                 <div id="collageResult" class="collage-result hidden">
-                    <h3>Your Amazing Collage</h3>
+                    <div class="collage-title">
+                        <h3><i class="fas fa-sparkles"></i> Your Masterpiece</h3>
+                        <p>A beautiful collage of your memories</p>
+                    </div>
                     <div class="collage-container">
                         <canvas id="collageCanvas"></canvas>
                         <div class="collage-actions">
                             <button id="downloadCollageBtn" class="btn-primary">
-                                <i class="fas fa-download"></i> Download
+                                <i class="fas fa-download"></i> Download HD
                             </button>
                             <button id="shareCollageBtn" class="btn-secondary">
-                                <i class="fas fa-share"></i> Share
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                            <button id="recreateCollageBtn" class="btn-outline">
+                                <i class="fas fa-redo"></i> Recreate
                             </button>
                         </div>
                     </div>
@@ -224,8 +297,19 @@
                         <select id="qualitySelect">
                             <option value="0.7">Standard</option>
                             <option value="0.8" selected>High</option>
-                            <option value="0.9">Ultra</option>
+                            <option value="0.9">Ultra HD</option>
                         </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>
+                            <i class="fas fa-grid"></i>
+                            Grid Lines
+                        </label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="gridToggle" checked>
+                            <span class="slider"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -235,13 +319,29 @@
         <div id="photoModal" class="modal hidden">
             <div class="modal-content photo-modal">
                 <div class="modal-header">
-                    <h3>Photo Preview</h3>
+                    <h3><i class="fas fa-image"></i> Photo Preview</h3>
                     <button id="closePhotoBtn" class="close-btn">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <img id="previewImage" src="/placeholder.svg" alt="Photo Preview">
+                    <div class="photo-preview-container">
+                        <img id="previewImage" src="/placeholder.svg" alt="Photo Preview">
+                        <div class="photo-details">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <span id="photoDate">Date</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-palette"></i>
+                                <span id="photoFilter">Filter</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-camera"></i>
+                                <span>PhotoStudio Pro</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="photo-actions">
                         <button id="downloadPhotoBtn" class="btn-primary">
                             <i class="fas fa-download"></i> Download
